@@ -13,6 +13,16 @@ To avoid this, it is my intention to pass objects as arguments to these calculat
 ### Model
 The model is intended to act similarly to a grid-based fluid dynamics model. It defines a grid of values, and iterates over the chaotic Lorenz equations.
 
+The class `ElementData` holds the variables that make up the model.
+
+The function `level1Function()` calculates the two derivatives that use all three variables (dy/dt and dz/dt).
+
+The function `level2Function()` calculates the x derivative which only need to know about the x and y values. This demonstrates how lower-level functions fit into each framework.
+
+For reference, an equivalent to `level1Function()` might be the top level one-dimensional physics routine and an equivalent to level2Function might be the calculation of the open water matter, momentum and energy fluxes.
+
+In frameworks that use them, the argument classes are classes that hold references to all of the variables that will be used by a particular function. The intent is that these allow definition of what variables are accessed and, by the `const`-ness of the accessing fucntion, whether that access is read-only or read-write.
+
 ## `FiniteElement` method
 `infinitely_elementary.cpp`
 
