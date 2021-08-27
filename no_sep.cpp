@@ -39,7 +39,7 @@ void level1Function(ElementData& data) {
 
   data.x += data.dx_dt * dt;
   data.y += dy_dt * dt;
-  data.z += dz_dt;
+  data.z += dz_dt * dt;
 }  
   
 void level2Function(ElementData& data) {
