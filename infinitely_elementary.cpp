@@ -38,7 +38,7 @@ void ElementData::level1Function() {
 
   m_x += m_dx_dt * dt;
   m_y += dy_dt * dt;
-  m_z += dz_dt;
+  m_z += dz_dt * dt;
 }  
   
 void ElementData::level2Function() {
