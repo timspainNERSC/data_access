@@ -93,3 +93,49 @@ An adaptation of the Reference and Accessor methods which requires nothing to be
 ### Disadvantages
 * Should the `double&` access functions in fact just be public variables?
 * Complex data structures
+
+## Argument monsters
+`monster.cpp`
+
+Passing data as individual arguments. The old way to do it, for example in Fortran models. It looks simple with 3 variables, but much worse with twenty. Arguments can be missed but caught at run time or misplaced, which is much more insidious.
+### Advantages
+* Classic
+* Conecptually simple
+* Read/write status easily added
+### Disadvantages
+* So. Many. Arguments.
+
+## Functor
+`functor.cpp`
+
+There are no direct functions. All of the functions are defined as the `operator()` member of a class. A new instance of the class id created from the parent data class, the members of which are all public. If a higher numbered level wants to declare the it will not write the data, then the member is a `const &` reference, rather than a plain `&` reference.
+
+Once the instance is constructed from the more general data object, the calculation is performed by calling `object()`, using the `operator()()` function.
+### Advantages
+* Separation of concerns
+* Read/write status clealry marked
+* Clean code at the point of calling
+### Disadvantages
+* Only just fits inside the concept of a functor
+* Many objects created
+  * If the compiler cannot be persuaded to optimize that away
+
+## Friend constructors
+`close_friends.cpp`
+
+A derived system based on the functor version above. Instead of having all members public and read-write, all data members are private. However, the constructor of each function is declared as a friend of the data class it uses on construction. Again, data members within the class are `const` references if the are intended to be used read-only.
+
+Having to declare the `friend`ly constructors might not be such a disadvantage. It means that only a small, known set of functors are allowed to access the more basic level data as read-write. If read-write access were available to any class that used the accessor class (for example), then any new code would be able to access `ElementData`. Explicitly listing those that are retains more control.
+### Advantages
+* As functor
+* Data members are not public read-writeable
+* Other classes do not have general read-write access to `ElementData`
+### Disadvantages
+* Also as functor
+
+## Derived classes
+`friends_and_descendants.cpp`
+
+Based on the Friend Constructors. A demonstration of including an alternative implementation of the functions, using protected data members and without having to declare the constructors of the derived funcotr classes as friends.
+### Extra advantages
+* Derived classes can provide alterantive implementations
